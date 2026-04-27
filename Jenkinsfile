@@ -1,29 +1,8 @@
-pipeline {
-    agent any
-
-    stages {
-
-        stage('Read Version') {
-            steps {
-                script {
-                    def packageJSON = readJSON file: 'package.json'
-                    def appVersion = packageJSON.version
-                    echo "App version: ${appVersion}"
-                }
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
-
-        stage('Unit Test') {
-            steps {
-                sh 'npm test'
-            }
-        }
-
+stage('Debug PATH') {
+    steps {
+        sh 'whoami'
+        sh 'echo $PATH'
+        sh 'which node'
+        sh 'which npm'
     }
 }
