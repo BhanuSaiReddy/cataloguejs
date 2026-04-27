@@ -3,13 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
-            steps {
-                // Pull code from Git (change URL if needed)
-                git url: 'https://github.com/BhanuSaiReddy/cataloguejs.git', branch: 'main'
-            }
-        }
-
         stage('Read Version') {
             steps {
                 script {
@@ -23,7 +16,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building application..."
-                // Example: sh 'npm install && npm run build'
+                sh 'npm install'
+                sh 'npm run build'
             }
         }
 
