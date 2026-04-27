@@ -1,34 +1,32 @@
 pipeline {
-    agent any
+    agent { label 'agent-1' }
 
     stages {
 
-        stage('Debug PATH') {
+        stage('Checkout Code') {
             steps {
-                sh '''
-                    whoami
-                    echo $PATH
-                    which node
-                    which npm
-                    node -v
-                    npm -v
-                '''
+                git url: 'https://github.com/BhanuSaiReddy/cataloguejs.git', branch: 'main'
             }
         }
 
         stage('Read Version') {
             steps {
                 script {
-                    def packageJSON = readJSON file: 'package.json'
-                    def appVersion = packageJSON.version
-                    echo "App version: ${appVersion}"
+                    def packageJSON = readFile 'package.json'
+                    def json = new groovy.json.JsonSlurper().parseText(packageJSON)
+
+                    echo "App Version: ${json.version}"
                 }
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh '''
+                    node -v
+                    npm -v
+                    npm install
+                '''
             }
         }
 
@@ -37,6 +35,5 @@ pipeline {
                 sh 'npm test'
             }
         }
-
     }
 }
