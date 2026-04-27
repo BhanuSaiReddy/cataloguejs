@@ -13,18 +13,17 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
-                echo "Building application..."
                 sh 'npm install'
-                sh 'npm run build'
             }
         }
 
-        stage('Deploy') {
+        stage('Unit Test') {
             steps {
-                echo "Deploying application version..."
+                sh 'npm test'
             }
         }
+
     }
 }
