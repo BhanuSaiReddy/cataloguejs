@@ -35,5 +35,23 @@ pipeline {
                 sh 'npm test'
             }
         }
+
+        stage('Build & Archive') {
+            steps {
+                sh '''
+                    if npm run | grep -q build; then
+                      npm run build
+                    else
+                      echo "No build script found, skipping build step"
+                    fi
+                '''
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: '**/dist/**, **/build/**', fingerprint: true
+                }
+            }
+        }
     }
 }
+``
